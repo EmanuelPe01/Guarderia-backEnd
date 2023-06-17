@@ -7,6 +7,9 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Requisitos
+1. Solo tener instalado Composer
+
 ## Antes de comenzar 
 1. Clona el repositorio a tu máquina local.
 2. Navega a la carpeta del proyecto en la línea de comandos.
