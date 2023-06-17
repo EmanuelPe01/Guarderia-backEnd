@@ -11,7 +11,10 @@
 1. Clona el repositorio a tu máquina local.
 2. Navega a la carpeta del proyecto en la línea de comandos.
 3. Crear un archivo .env, copiar el ejemplo y configurar las variables de conexión con la base de datos
-4. Ejecutar el siguiente comando:
+4. Instalar todas las dependencias necesarias con:
+    ```shell
+    composer install
+6. Ejecutar el siguiente comando:
    ```shell
    php artisan migrate
 
