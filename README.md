@@ -7,7 +7,7 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## Instrucciones de Ejecución
+## Para visitar la documentación con Swagger
 
 1. Clona el repositorio a tu máquina local.
 2. Navega a la carpeta del proyecto en la línea de comandos.
