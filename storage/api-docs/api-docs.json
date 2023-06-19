@@ -6,6 +6,39 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/createRole": {
+            "post": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Creación de un role",
+                "description": "Se almacena un usuario",
+                "operationId": "943d18c152cac7bf17806fb7b9e64005",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Se almacena un role."
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                }
+            }
+        },
         "/api/createUser": {
             "post": {
                 "tags": [
