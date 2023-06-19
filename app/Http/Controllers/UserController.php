@@ -112,7 +112,7 @@ class UserController extends Controller
                 //El plugin PHP Intelephense marca como error la funcion createToken, pero hay que hacer caso omiso
                 $token = $user->createToken('token')->plainTextToken;
         
-                return response()->json(['token' => $token], 200);
+                return response()->json(['token' => $token ,'user'=>$user], 200);
             }
         
             return response()->json(['message' => 'Credenciales inválidas'], 401);
