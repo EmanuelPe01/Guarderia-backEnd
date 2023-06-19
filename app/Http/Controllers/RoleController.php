@@ -23,7 +23,7 @@ class RoleController extends Controller
          *     @OA\RequestBody(
          *         required=true,
          *         @OA\JsonContent(
-         *             @OA\Property(property="nombre", type="string"), 
+         *             @OA\Property(property="name", type="string"), 
          *         )
          *     ),
          *     @OA\Response(
