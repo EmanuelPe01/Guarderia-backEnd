@@ -20,7 +20,7 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "nombre": {
+                                    "name": {
                                         "type": "string"
                                     }
                                 },
@@ -134,6 +134,29 @@
                     },
                     "default": {
                         "description": "Ha ocurrido un error."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/checkStatus": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Verificacion de token",
+                "description": "Se verifica si el token esta autorizado o no",
+                "operationId": "eb4ebce7bdb5969c49c2f5b126951726",
+                "responses": {
+                    "200": {
+                        "description": "Retorna el usuario y el token"
+                    },
+                    "401": {
+                        "description": "No autorizado"
                     }
                 },
                 "security": [

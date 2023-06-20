@@ -163,4 +163,37 @@ class UserController extends Controller
         $user = $request->user();
         return response()->json($user);
     }
+    
+    
+    /**
+         * Se verifica si el token esta autorizado o no
+         *
+         * @OA\Post(
+         *     path="/api/checkStatus",
+         *     tags={"Users"},
+         *     summary="Verificacion de token",
+         *     security={{"bearerAuth": {}}},
+         *     @OA\Response(
+         *         response=200,
+         *         description="Retorna el usuario y el token"
+         *     ),
+         *     @OA\Response(
+         *         response=401,
+         *         description="No autorizado"
+         *     )
+         * )
+         */
+    public function checkStatus(Request $request)
+    {
+        $user = $request -> user();
+        if($user){
+            $token = $user->createToken('token')->plainTextToken;
+            return response()->json(['token'=>$token, 'user'=>$user],200);
+        }
+        return response()->json(['message'=> "No autorizado"],401);
+
+
+
+
+    }
 }
