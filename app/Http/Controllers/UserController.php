@@ -97,26 +97,22 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-        if (Auth::check()){
-            return response()->json(['token' => 'El usuario ya tenía iniciado sesión'], 200);
-        } else {
-            $request->validate([
-                'email' => 'required|email',
-                'password' => 'required',
-            ]);
-        
-            $credentials = $request->only('email', 'password');
-        
-            if (Auth::attempt($credentials)) {
-                $user = Auth::user();
-                //El plugin PHP Intelephense marca como error la funcion createToken, pero hay que hacer caso omiso
-                $token = $user->createToken('token')->plainTextToken;
-        
-                return response()->json(['token' => $token ,'user'=>$user], 200);
-            }
-        
-            return response()->json(['message' => 'Credenciales inválidas'], 401);
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+    
+        $credentials = $request->only('email', 'password');
+    
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            //El plugin PHP Intelephense marca como error la funcion createToken, pero hay que hacer caso omiso
+            $token = $user->createToken('token')->plainTextToken;
+    
+            return response()->json(['token' => $token ,'user'=>$user], 200);
         }
+    
+        return response()->json(['message' => 'Credenciales inválidas'], 401);
     }
 
     /**
@@ -158,13 +154,6 @@ class UserController extends Controller
         return response()->json(['message' => 'Cierre de sesión exitoso']);
     }
 
-    public function getUser(Request $request)
-    {
-        $user = $request->user();
-        return response()->json($user);
-    }
-    
-    
     /**
          * Se verifica si el token esta autorizado o no
          *
@@ -187,13 +176,7 @@ class UserController extends Controller
     {
         $user = $request -> user();
         if($user){
-            $token = $user->createToken('token')->plainTextToken;
-            return response()->json(['token'=>$token, 'user'=>$user],200);
+            return response()->json(['token'=>str_replace('Bearer ', '', $request->header('authorization')), 'user'=>$user],200);
         }
-        return response()->json(['message'=> "No autorizado"],401);
-
-
-
-
     }
 }
