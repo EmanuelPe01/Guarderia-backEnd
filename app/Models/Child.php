@@ -5,13 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Group extends Model
+class Child extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'name',
+        'first_surname',
+        'second_surname',
+        'id_group',
         'id_user',
-        'name'
     ];
 
     public function user()
@@ -19,13 +22,14 @@ class Group extends Model
         return $this->belongsTo(User::class, 'id_user');
     }
 
-    public function child()
+    public function group()
     {
-        return $this->hasMany(Child::class, 'id_group');
+        return $this->belongsTo(Group::class, 'id_group');
     }
 
-    public function notices()
+    public function ingestion()
     {
-        return $this->hasMany(Notice::class, 'id_group');
+        return $this->hasMany(Ingestion::class, 'id_child');
     }
+
 }

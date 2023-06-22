@@ -38,4 +38,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Group::class);
     }
+
+    public function child()
+    {
+        return $this->hasMany(Child::class, 'id_user');
+    }
 }

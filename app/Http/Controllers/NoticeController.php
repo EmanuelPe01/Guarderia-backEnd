@@ -25,6 +25,7 @@ class NoticeController extends Controller
      *     path="/api/createNotice",
      *     tags={"Anuncios"},
      *     summary="Publicación de un auncio",
+     *     security={{"bearerAuth": {}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -90,6 +91,7 @@ class NoticeController extends Controller
      *     path="/api/allNotices",
      *     tags={"Anuncios"},
      *     summary="Se obtienen todos los anuncios",
+     *     security={{"bearerAuth": {}}},
      *     @OA\Response(
      *         response=200,
      *         description="Retorna la informacion de todos los anuncios"

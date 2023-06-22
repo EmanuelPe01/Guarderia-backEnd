@@ -5,20 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Notice extends Model
+class Food extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'name',
+        'type',
         'date',
-        'importance',
-        'title',
-        'body',
-        'id_group'
+        'hour',
     ];
 
-    public function group()
+    public function ingestion()
     {
-        return $this->belongsTo(Group::class, 'id_group');
+        return $this->hasMany(Ingestion::class, 'id_food');
     }
 }

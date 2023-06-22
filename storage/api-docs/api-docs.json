@@ -105,7 +105,12 @@
                     "default": {
                         "description": "Ha ocurrido un error."
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/allNotices": {
@@ -123,7 +128,12 @@
                     "400": {
                         "description": "Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/createRole": {
