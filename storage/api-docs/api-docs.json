@@ -6,6 +6,126 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/createGroup": {
+            "post": {
+                "tags": [
+                    "Grupos"
+                ],
+                "summary": "Creacion de un grupo",
+                "description": "El usuario al que se desea asignar un grupo, debe tener el rol de profesor",
+                "operationId": "3351223d0453e36f1dfa948493a507ab",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id_user": {
+                                        "type": "integer"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Se almacena un grupo asociado a un profesor."
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                }
+            }
+        },
+        "/api/allGroups": {
+            "get": {
+                "tags": [
+                    "Grupos"
+                ],
+                "summary": "Se obtienen todos los grupos",
+                "description": "Se verifica si el token esta autorizado o no",
+                "operationId": "489aae6c074781cc27b55b9954e8eb04",
+                "responses": {
+                    "200": {
+                        "description": "Retorna la informacion de todos los grupos"
+                    },
+                    "400": {
+                        "description": "Error"
+                    }
+                }
+            }
+        },
+        "/api/createNotice": {
+            "post": {
+                "tags": [
+                    "Anuncios"
+                ],
+                "summary": "Publicación de un auncio",
+                "description": "Para poder almacenar un anuncio tiene que existir un profesor que esté a cargo de un grupo.\nSe verifica que el grupo exista y que además corresponda al usuario que lo esta publicando;\nse da por hecho que el usuario es un profesor, pues los unicos que pueden ser registrados \nen la tabla de grupos, son los profesores.\n\nEl formato de la fecha es YYYY-MM-DD",
+                "operationId": "6a1f544b29324653e4e445d6ba6e4b7b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id_user": {
+                                        "type": "integer"
+                                    },
+                                    "importance": {
+                                        "type": "integer"
+                                    },
+                                    "date": {
+                                        "type": "string"
+                                    },
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "body": {
+                                        "type": "string"
+                                    },
+                                    "id_group": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Se almacena un anuncio en un grupo."
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                }
+            }
+        },
+        "/api/allNotices": {
+            "get": {
+                "tags": [
+                    "Anuncios"
+                ],
+                "summary": "Se obtienen todos los anuncios",
+                "description": "Se verifica si el token esta autorizado o no",
+                "operationId": "96c912d11487b2f0d86f73c0698c555d",
+                "responses": {
+                    "200": {
+                        "description": "Retorna la informacion de todos los anuncios"
+                    },
+                    "400": {
+                        "description": "Error"
+                    }
+                }
+            }
+        },
         "/api/createRole": {
             "post": {
                 "tags": [
@@ -35,6 +155,24 @@
                     },
                     "default": {
                         "description": "Ha ocurrido un error."
+                    }
+                }
+            }
+        },
+        "/api/allRoles": {
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Se obtienen todos los roles",
+                "description": "Se verifica si el token esta autorizado o no",
+                "operationId": "b927b69bb348ff5c32dc606759aa18a6",
+                "responses": {
+                    "200": {
+                        "description": "Retorna la informacion de todos los roles"
+                    },
+                    "400": {
+                        "description": "Error"
                     }
                 }
             }
@@ -144,13 +282,13 @@
             }
         },
         "/api/checkStatus": {
-            "post": {
+            "get": {
                 "tags": [
                     "Users"
                 ],
                 "summary": "Verificacion de token",
                 "description": "Se verifica si el token esta autorizado o no",
-                "operationId": "eb4ebce7bdb5969c49c2f5b126951726",
+                "operationId": "82c0d32ffd8e0660ba26376751403620",
                 "responses": {
                     "200": {
                         "description": "Retorna el usuario y el token"
@@ -164,6 +302,24 @@
                         "bearerAuth": []
                     }
                 ]
+            }
+        },
+        "/api/allUsers": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Se obtienen todos los usuarios",
+                "description": "Se verifica si el token esta autorizado o no",
+                "operationId": "82a0a02e8e4eb56ee90a829635585e04",
+                "responses": {
+                    "200": {
+                        "description": "Retorna la informacion de todos los usuarios"
+                    },
+                    "400": {
+                        "description": "Error"
+                    }
+                }
             }
         }
     },

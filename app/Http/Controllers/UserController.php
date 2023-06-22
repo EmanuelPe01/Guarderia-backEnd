@@ -157,7 +157,7 @@ class UserController extends Controller
     /**
          * Se verifica si el token esta autorizado o no
          *
-         * @OA\Post(
+         * @OA\Get(
          *     path="/api/checkStatus",
          *     tags={"Users"},
          *     summary="Verificacion de token",
@@ -178,5 +178,29 @@ class UserController extends Controller
         if($user){
             return response()->json(['token'=>str_replace('Bearer ', '', $request->header('authorization')), 'user'=>$user],200);
         }
+    }
+
+    /**
+     * Se verifica si el token esta autorizado o no
+     *
+     * @OA\Get(
+     *     path="/api/allUsers",
+     *     tags={"Users"},
+     *     summary="Se obtienen todos los usuarios",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Retorna la informacion de todos los usuarios"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Error"
+     *     )
+     * )
+    */
+    public function getAllUsers(){
+        $users = User::all();
+        return response()->json([
+            'users' => $users
+        ], 200);
     }
 }

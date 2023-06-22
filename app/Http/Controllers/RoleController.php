@@ -9,10 +9,6 @@ use OpenApi\Annotations as OA;
 
 class RoleController extends Controller
 {
-    public function index()
-    {
-        
-    }
     /**
          * Se almacena un usuario
          *
@@ -52,18 +48,27 @@ class RoleController extends Controller
         ], 201);
     }
 
-    public function show($id)
-    {
-        
-    }
-
-    public function update(Request $request, $id)
-    {
-        
-    }
-
-    public function destroy($id)
-    {
-        
+     /**
+     * Se verifica si el token esta autorizado o no
+     *
+     * @OA\Get(
+     *     path="/api/allRoles",
+     *     tags={"Roles"},
+     *     summary="Se obtienen todos los roles",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Retorna la informacion de todos los roles"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Error"
+     *     )
+     * )
+    */
+    public function getAllRoles(){
+        $roles = Role::all();
+        return response()->json([
+            'roles' => $roles
+        ], 200);
     }
 }
