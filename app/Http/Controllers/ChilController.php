@@ -12,6 +12,34 @@ use Illuminate\Validation\Rule;
 
 class ChilController extends Controller
 {
+     /**
+     * El id_user debe corresponder a un usuario con el rol de padre, 
+     * y el id_group debe existir
+     * 
+     * @OA\Post(
+     *     path="/api/createChild",
+     *     tags={"Chamacos"},
+     *     summary="Publicación de un auncio",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="name", type="string"), 
+     *             @OA\Property(property="first_surname", type="string"), 
+     *             @OA\Property(property="second_surname", type="string"), 
+     *             @OA\Property(property="id_group", type="integer"), 
+     *             @OA\Property(property="id_user", type="integer")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Se retornan los anuncios según el usuario."
+     *     ),
+     *     @OA\Response(
+     *         response="default",
+     *         description="Ha ocurrido un error."
+     *     )
+     * )
+     */
     public function store(Request $request)
     {
         try {
@@ -48,7 +76,8 @@ class ChilController extends Controller
 
         } catch (Exception $e){
             return response()->json([
-                'message' => 'No autorizado'
+                'message' => 'No autorizado',
+                'error' => $e
             ], 401);
         }
     }

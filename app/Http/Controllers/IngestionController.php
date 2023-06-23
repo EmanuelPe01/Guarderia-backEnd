@@ -162,4 +162,47 @@ class IngestionController extends Controller
             ], 401);
         }
     }
+
+    /**
+     * Se verifica si el token esta autorizado o no
+     *
+     * @OA\Get(
+     *     path="/api/getIngestasByChild",
+     *     tags={"Ingestiones"},
+     *     security={{"bearerAuth": {}}},
+     *     summary="Se obtienen las ingestas de los hijos correspondientes al padre",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Retorna las ingestas de los niños registrados"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Error"
+     *     )
+     * )
+    */  
+    public function getIngestasByChild(Request $request)
+    {
+        $user = $request->user();
+
+        if($user->role_id == 2){
+            $children = $user->children;
+
+            $ingestions = collect();
+
+            foreach ($children as $child) {
+                $ingestion = $child->ingestion;
+                $ingestion->load('child', 'food');
+                $ingestions = $ingestions->concat($ingestion);
+            }
+
+            return response()->json([
+                'ingestions' => $ingestions
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'No autorizado',
+            ], 401);
+        }
+    }
 }

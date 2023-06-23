@@ -6,6 +6,51 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/createChild": {
+            "post": {
+                "tags": [
+                    "Chamacos"
+                ],
+                "summary": "Publicación de un auncio",
+                "description": "El id_user debe corresponder a un usuario con el rol de padre, \ny el id_group debe existir",
+                "operationId": "9923726a293d6097611c0a57e5c989ac",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "first_surname": {
+                                        "type": "string"
+                                    },
+                                    "second_surname": {
+                                        "type": "string"
+                                    },
+                                    "id_group": {
+                                        "type": "integer"
+                                    },
+                                    "id_user": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Se retornan los anuncios según el usuario."
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                }
+            }
+        },
         "/api/createFood": {
             "post": {
                 "tags": [
@@ -200,6 +245,29 @@
                     },
                     "default": {
                         "description": "Ha ocurrido un error."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/getIngestasByChild": {
+            "get": {
+                "tags": [
+                    "Ingestiones"
+                ],
+                "summary": "Se obtienen las ingestas de los hijos correspondientes al padre",
+                "description": "Se verifica si el token esta autorizado o no",
+                "operationId": "5ed95649726bc0c719065bb83dbc95c3",
+                "responses": {
+                    "200": {
+                        "description": "Retorna las ingestas de los niños registrados"
+                    },
+                    "400": {
+                        "description": "Error"
                     }
                 },
                 "security": [
