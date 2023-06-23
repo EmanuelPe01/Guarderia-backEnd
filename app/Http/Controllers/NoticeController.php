@@ -48,38 +48,38 @@ class NoticeController extends Controller
      */
     public function store(Request $request)
     {
-        try{
-            $request->validate([
-                'importance' => 'required|between:0,3',
-                'date' => 'required|date_format:Y-m-d',
-                'title' => 'required',
-                'body' => 'required',
-                'id_group' => [
-                    'required',
-                    Rule::exists(Group::class, 'id')->where(function ($query) use ($request) {
-                        $query->where('id', $request->id_group)
-                            ->where('id_user', $request->user()->id);
-                    }),
-                ]
-            ]);
-
-            $notice = Notice::create([
-                'date' => $request->date,
-                'importance' => $request->importance, 
-                'title' => $request->title,
-                'body'=> $request->body,
-                'id_group' => $request->id_group
-            ]);
-
+        $groupID = $request->user->group->id;
+        if ($groupID){
+            try{
+                $request->validate([
+                    'importance' => 'required|between:0,3',
+                    'date' => 'required|date_format:Y-m-d',
+                    'title' => 'required',
+                    'body' => 'required'
+                ]);
+    
+                $notice = Notice::create([
+                    'date' => $request->date,
+                    'importance' => $request->importance, 
+                    'title' => $request->title,
+                    'body'=> $request->body,
+                    'id_group' => $request->id_group
+                ]);
+    
+                return response()->json([
+                    'message' => 'Anuncio publicado correctamente',
+                    'notice' => $notice
+                ], 201);
+            } catch (Exception $e){
+                return response()->json([
+                    'message' => 'No autorizado',
+                    'error' => $e
+                ],400);
+            }
+        } else {
             return response()->json([
-                'message' => 'Anuncio publicado correctamente',
-                'notice' => $notice
-            ], 201);
-        } catch (Exception $e){
-            return response()->json([
-                'message' => 'No autorizado',
-                'error' => $e
-            ],400);
+                'message' => 'No autorizado'
+            ], 401);
         }
     }
 
