@@ -63,7 +63,7 @@ class NoticeController extends Controller
                     'importance' => $request->importance, 
                     'title' => $request->title,
                     'body'=> $request->body,
-                    'id_group' => $request->id_group
+                    'id_group' => $groupID
                 ]);
     
                 return response()->json([
