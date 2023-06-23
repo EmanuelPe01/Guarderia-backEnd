@@ -48,7 +48,7 @@ class NoticeController extends Controller
      */
     public function store(Request $request)
     {
-        $groupID = $request->user->group->id;
+        $groupID = $request->user()->group->id;
         if ($groupID){
             try{
                 $request->validate([
