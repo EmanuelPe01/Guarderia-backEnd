@@ -158,7 +158,7 @@ class UserController extends Controller
          * Se verifica si el token esta autorizado o no
          *
          * @OA\Get(
-         *     path="/api/checkStatus",
+         *     path="/api/check-status",
          *     tags={"Users"},
          *     summary="Verificacion de token",
          *     security={{"bearerAuth": {}}},
@@ -174,7 +174,7 @@ class UserController extends Controller
          */
     public function checkStatus(Request $request)
     {
-        $user = $request -> user();
+        $user = $request->user();
         if($user){
             return response()->json(['token'=>str_replace('Bearer ', '', $request->header('authorization')), 'user'=>$user],200);
         }

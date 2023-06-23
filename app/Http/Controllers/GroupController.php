@@ -63,7 +63,6 @@ class GroupController extends Controller
     }
 
     /**
-     * Se verifica si el token esta autorizado o no
      *
      * @OA\Get(
      *     path="/api/allGroups",
@@ -84,5 +83,41 @@ class GroupController extends Controller
         return response()->json([
             'groups' => $groups
         ], 200);
+    }
+
+    /**
+     * Se verifica si el token esta autorizado o no
+     *
+     * @OA\Get(
+     *     path="/api/getChidrenByGroup",
+     *     tags={"Grupos"},
+     *     security={{"bearerAuth": {}}},
+     *     summary="Se obtienen los niños correspondientes al grupo del profesor",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Retorna la informacion de los niños registrados"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Error"
+     *     )
+     * )
+    */    
+    public function getChildByGroup(Request $request)
+    {
+        $user = $request->user();
+
+        if($user->role_id == 1){
+            $group = $user->group;
+            $children = $group->children;
+
+            return response()->json([
+                'group' => $children
+            ],200);
+        } else {
+            return response()->json([
+                'message' => 'No autorizado'
+            ], 401);
+        }
     }
 }

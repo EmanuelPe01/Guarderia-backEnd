@@ -25,6 +25,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/allNotices', [NoticeController::class, 'getNotices']);
 
     Route::post('/createIngestion', [IngestionController::class, 'store']);
+    Route::patch('/getIngestasByGroup', [IngestionController::class, 'getIngestasByGroup']);
+
+    Route::get('/getChidrenByGroup', [GroupController::class, 'getChildByGroup']);
 });
 
 Route::post('/createGroup', [GroupController::class, 'store']);

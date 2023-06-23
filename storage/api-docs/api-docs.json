@@ -90,7 +90,6 @@
                     "Grupos"
                 ],
                 "summary": "Se obtienen todos los grupos",
-                "description": "Se verifica si el token esta autorizado o no",
                 "operationId": "489aae6c074781cc27b55b9954e8eb04",
                 "responses": {
                     "200": {
@@ -100,6 +99,29 @@
                         "description": "Error"
                     }
                 }
+            }
+        },
+        "/api/getChidrenByGroup": {
+            "get": {
+                "tags": [
+                    "Grupos"
+                ],
+                "summary": "Se obtienen los niños correspondientes al grupo del profesor",
+                "description": "Se verifica si el token esta autorizado o no",
+                "operationId": "f9161ba69701f62109e39ac8b894d33f",
+                "responses": {
+                    "200": {
+                        "description": "Retorna la informacion de los niños registrados"
+                    },
+                    "400": {
+                        "description": "Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/createIngestion": {
@@ -124,6 +146,47 @@
                                     },
                                     "id_food": {
                                         "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Se almacena un anuncio en un grupo."
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/getIngestasByGroup": {
+            "patch": {
+                "tags": [
+                    "Ingestiones"
+                ],
+                "summary": "Publicación de un auncio",
+                "description": "Retorna la gratificación de los niños, si no tienen ingestiones registradas, no se de devuelven \nni la gratificación ni la hora del tipo de comida.\n\nSe consulta por tipo de comida y por fecha\n\nEl formato de la fecha es YYYY-MM-DD",
+                "operationId": "9344a24ba6a49d5e7f4d9fdaba999fec",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "type": {
+                                        "type": "string"
+                                    },
+                                    "date": {
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
@@ -374,14 +437,14 @@
                 ]
             }
         },
-        "/api/checkStatus": {
+        "/api/check-status": {
             "get": {
                 "tags": [
                     "Users"
                 ],
                 "summary": "Verificacion de token",
                 "description": "Se verifica si el token esta autorizado o no",
-                "operationId": "82c0d32ffd8e0660ba26376751403620",
+                "operationId": "3d8908eec88358d90461617a2bb880d1",
                 "responses": {
                     "200": {
                         "description": "Retorna el usuario y el token"
