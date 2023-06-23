@@ -6,6 +6,48 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/createFood": {
+            "post": {
+                "tags": [
+                    "Comidas"
+                ],
+                "summary": "Publicación de un auncio",
+                "description": "Formato de fecha: YYYY-MM-DD\n\nFormato de hora: HH:MM:SS",
+                "operationId": "6bfd0a3d45bc6e6f89330677fc951a88",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string"
+                                    },
+                                    "date": {
+                                        "type": "string"
+                                    },
+                                    "hour": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Se almacena un anuncio en un grupo."
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                }
+            }
+        },
         "/api/createGroup": {
             "post": {
                 "tags": [
@@ -60,6 +102,50 @@
                 }
             }
         },
+        "/api/createIngestion": {
+            "post": {
+                "tags": [
+                    "Ingestiones"
+                ],
+                "summary": "Publicación de un auncio",
+                "description": "Para poder almacenar un anuncio tiene que existir un profesor que esté a cargo de un grupo.\nSe verifica que el grupo exista y que además corresponda al usuario que lo esta publicando;\nse da por hecho que el usuario es un profesor, pues los unicos que pueden ser registrados \nen la tabla de grupos, son los profesores.\n\nEl formato de la fecha es YYYY-MM-DD",
+                "operationId": "f62c7c2e2d1c7fb851b7227896b385a0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "gratification": {
+                                        "type": "integer"
+                                    },
+                                    "id_child": {
+                                        "type": "integer"
+                                    },
+                                    "id_food": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Se almacena un anuncio en un grupo."
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/createNotice": {
             "post": {
                 "tags": [
@@ -74,9 +160,6 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "id_user": {
-                                        "type": "integer"
-                                    },
                                     "importance": {
                                         "type": "integer"
                                     },
@@ -118,15 +201,15 @@
                 "tags": [
                     "Anuncios"
                 ],
-                "summary": "Se obtienen todos los anuncios",
-                "description": "Se verifica si el token esta autorizado o no",
-                "operationId": "96c912d11487b2f0d86f73c0698c555d",
+                "summary": "Publicación de un auncio",
+                "description": "Se debe mandar el token de inicio de sesión para verificar que anuncis se devolverán.\n\nSi es profesor se mandan los anuncios correspondientes al grupo, por otro lado, si es \npadre, se mandan los anuncios de sus hijos.",
+                "operationId": "1de3562060be45b8ad6c2a85269a096a",
                 "responses": {
                     "200": {
-                        "description": "Retorna la informacion de todos los anuncios"
+                        "description": "Se retornan los anuncios según el usuario."
                     },
-                    "400": {
-                        "description": "Error"
+                    "default": {
+                        "description": "Ha ocurrido un error."
                     }
                 },
                 "security": [

@@ -29,7 +29,6 @@ class NoticeController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             @OA\Property(property="id_user", type="integer"), 
      *             @OA\Property(property="importance", type="integer"), 
      *             @OA\Property(property="date", type="string"), 
      *             @OA\Property(property="title", type="string"), 
@@ -59,7 +58,7 @@ class NoticeController extends Controller
                     'required',
                     Rule::exists(Group::class, 'id')->where(function ($query) use ($request) {
                         $query->where('id', $request->id_group)
-                            ->where('id_user', $request->id_user);
+                            ->where('id_user', $request->user()->id);
                     }),
                 ]
             ]);
@@ -84,26 +83,48 @@ class NoticeController extends Controller
         }
     }
 
-    /**
-     * Se verifica si el token esta autorizado o no
+     /**
+     * Se debe mandar el token de inicio de sesión para verificar que anuncis se devolverán.
+     * 
+     * Si es profesor se mandan los anuncios correspondientes al grupo, por otro lado, si es 
+     * padre, se mandan los anuncios de sus hijos.
      *
+     * 
      * @OA\Get(
      *     path="/api/allNotices",
      *     tags={"Anuncios"},
-     *     summary="Se obtienen todos los anuncios",
+     *     summary="Publicación de un auncio",
      *     security={{"bearerAuth": {}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Retorna la informacion de todos los anuncios"
+     *         description="Se retornan los anuncios según el usuario."
      *     ),
      *     @OA\Response(
-     *         response=400,
-     *         description="Error"
+     *         response="default",
+     *         description="Ha ocurrido un error."
      *     )
      * )
-    */
-    public function getAllNotices(){
-        $notices = Notice::all();
+     */
+    public function getNotices(Request $request)
+    {
+        $user = $request->user();
+
+        if($user->role_id == 1)
+        {
+            $group = $user->group;
+            $notices = $group->notices;
+        } else if($user->role_id == 2)
+        {
+            $children = $user->children;
+            $notices = collect();
+
+            foreach ($children as $child) {
+                $group = $child->group;
+                $childNotices = $group->notices;
+                $notices = $notices->concat($childNotices);
+            }
+        }
+
         return response()->json([
             'notices' => $notices
         ], 200);

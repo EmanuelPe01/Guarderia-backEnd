@@ -34,12 +34,12 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function groups()
+    public function group()
     {
-        return $this->hasMany(Group::class);
+        return $this->hasOne(Group::class, 'id_user');
     }
 
-    public function child()
+    public function children()
     {
         return $this->hasMany(Child::class, 'id_user');
     }

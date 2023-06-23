@@ -22,7 +22,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [UserController::class, 'logout']);
 
     Route::post('/createNotice', [NoticeController::class, 'store']);
-    Route::get('/allNotices', [NoticeController::class, 'getAllNotices']);
+    Route::get('/allNotices', [NoticeController::class, 'getNotices']);
 
     Route::post('/createIngestion', [IngestionController::class, 'store']);
 });

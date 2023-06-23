@@ -17,7 +17,7 @@ class Child extends Model
         'id_user',
     ];
 
-    public function user()
+    public function users()
     {
         return $this->belongsTo(User::class, 'id_user');
     }
