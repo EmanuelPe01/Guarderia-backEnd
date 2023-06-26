@@ -302,9 +302,6 @@
                                     },
                                     "body": {
                                         "type": "string"
-                                    },
-                                    "id_group": {
-                                        "type": "integer"
                                     }
                                 },
                                 "type": "object"

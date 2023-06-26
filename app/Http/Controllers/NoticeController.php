@@ -32,8 +32,7 @@ class NoticeController extends Controller
      *             @OA\Property(property="importance", type="integer"), 
      *             @OA\Property(property="date", type="string"), 
      *             @OA\Property(property="title", type="string"), 
-     *             @OA\Property(property="body", type="string"), 
-     *             @OA\Property(property="id_group", type="integer"), 
+     *             @OA\Property(property="body", type="string"),  
      *         )
      *     ),
      *     @OA\Response(
@@ -52,7 +51,7 @@ class NoticeController extends Controller
         if ($groupID){
             try{
                 $request->validate([
-                    'importance' => 'required|between:0,3',
+                    'importance' => 'required|between:1,4',
                     'date' => 'required|date_format:Y-m-d',
                     'title' => 'required',
                     'body' => 'required'
