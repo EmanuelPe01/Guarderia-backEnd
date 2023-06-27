@@ -50,11 +50,6 @@ class IngestionController extends Controller
         if ($user->role_id == 1){
             try{
                 $request->validate([
-                    'user_id' => [
-                        Rule::exists(User::class, 'id')->where(function ($query){
-                            $query->where('role_id', 1);
-                        })
-                    ],
                     'gratification'=> 'required',
                     'id_child' => [
                         'required',
@@ -144,11 +139,19 @@ class IngestionController extends Controller
                             ->where('food.type', '=', $request->type)
                             ->where('food.date', '=', $request->date);
                     })
-                    ->selectRaw('children.id as id_child, food.name, COALESCE(food.hour, "00:00:00") as hour, COALESCE(ingestions.gratification, 0) as gratification')
+                    ->selectRaw('children.name name, children.first_surname, children.second_surname, COALESCE(ingestions.gratification, 0) as gratification')
                     ->where('children.id_group', '=', $groupId)
                     ->get();
 
+                $food = DB::table('food')
+                    ->leftjoin('ingestions', function($join){
+                        $join->on('ingestions.id_food', '=', 'food.id');
+                    })
+                    ->select('food.id', 'food.name', 'food.hour')
+                    ->get();
+
                 return response()->json([
+                    'food' => $food,
                     'ingestions' => $ingestions
                 ], 200);
             } catch (Exception $ex){
