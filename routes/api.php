@@ -23,11 +23,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('/createNotice', [NoticeController::class, 'store']);
     Route::get('/allNotices', [NoticeController::class, 'getNotices']);
+    Route::get('/getNoticeByID/{id_notice}', [NoticeController::class, 'getNoticeByID']);
+    Route::put('/editNotice/{id_notice}', [NoticeController::class, 'editNotice']);
 
     Route::post('/createIngestion', [IngestionController::class, 'store']);
-    Route::patch('/getIngestasByGroup', [IngestionController::class, 'getIngestasByGroup']);
+    Route::get('/getIngestasByGroup/{type}/{date}', [IngestionController::class, 'getIngestasByGroup']);
     Route::get('/getIngestasByChild', [IngestionController::class, 'getIngestasByChild']);
-    Route::put('/editIngesta', [IngestionController::class, 'editIngesta']);
+    Route::put('/editIngesta/{id_ingesta}', [IngestionController::class, 'editIngesta']);
 
     Route::get('/getChidrenByGroup', [GroupController::class, 'getChildByGroup']);
 });

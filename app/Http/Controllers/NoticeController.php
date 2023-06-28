@@ -8,8 +8,7 @@ use Exception;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-
-
+use Mockery\Expectation;
 
 class NoticeController extends Controller
 {
@@ -128,4 +127,126 @@ class NoticeController extends Controller
             'notices' => $notices
         ], 200);
     }
+
+    /**
+     * El formato de la fecha es YYYY-MM-DD
+     * 
+     * @OA\Put(
+     *     path="/api/editNotice/{id_notice}",
+     *     tags={"Anuncios"},
+     *     summary="Publicación de un auncio",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Parameter(
+     *         name="id_notice",
+     *         in="path",
+     *         description="Id del anuncio",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="importance", type="integer"), 
+     *             @OA\Property(property="date", type="string"), 
+     *             @OA\Property(property="title", type="string"), 
+     *             @OA\Property(property="body", type="string"),  
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Se actualiza la información de un anuncio."
+     *     ),
+     *     @OA\Response(
+     *         response="default",
+     *         description="Ha ocurrido un error."
+     *     )
+     * )
+     */
+    public function editNotice(Request $request, $id)
+    {
+        $user = $request->user();
+
+        if ($user->role_id == 1)
+        {
+            try{
+                $request->validate([
+                    'importance' => 'required|between:1,4',
+                    'date' => 'required|date_format:Y-m-d',
+                    'title' => 'required',
+                    'body' => 'required'
+                ]);
+
+                $notice = Notice::find($id);
+                $notice->importance = $request->importance;
+                $notice->date = $request->date;
+                $notice->title = $request->title;
+                $notice->body = $request->body;
+
+                $notice->save();
+
+                return response()->json([
+                    'message' => "Datos almacenados correctamente",
+                    'notice_updated' => $notice
+                ], 200);
+            }
+            catch (Expectation $ex)
+            {
+                return response()->json([
+                    'error' => $ex
+                ], 418);
+            }
+        } else {
+            return response()->json([
+                'message' => 'No autorizado'
+            ], 401);
+        }
+    }
+
+    /**
+     * No importa que rol tenga el usuario, se podrá consultar la noticia por su ID
+     *
+     * 
+     * @OA\Get(
+     *     path="/api/getNoticeByID/{id_notice}",
+     *     tags={"Anuncios"},
+     *     summary="Publicación de un auncio",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Parameter(
+     *         name="id_notice",
+     *         in="path",
+     *         description="Id del anuncio",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Se retorna la información de un anuncio en especifico."
+     *     ),
+     *     @OA\Response(
+     *         response="default",
+     *         description="Ha ocurrido un error."
+     *     )
+     * )
+     */
+    public function getNoticeByID($id)
+    {
+        try
+        {
+            $notice =  Notice::find($id);
+
+            return response()->json([
+                'notice' => $notice
+            ], 200);
+        } 
+        catch (Exception $ex)
+        {
+            return response()->json([
+                'error' => $ex
+            ], 418);
+        }
+    }       
 }

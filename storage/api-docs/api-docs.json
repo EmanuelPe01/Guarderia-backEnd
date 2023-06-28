@@ -213,35 +213,38 @@
                 ]
             }
         },
-        "/api/getIngestasByGroup": {
-            "patch": {
+        "/api/getIngestasByGroup/{type}/{date}": {
+            "get": {
                 "tags": [
                     "Ingestiones"
                 ],
                 "summary": "Publicación de un auncio",
                 "description": "Retorna la gratificación de los niños, si no tienen ingestiones registradas, no se de devuelven \nni la gratificación ni la hora del tipo de comida.\n\nSe consulta por tipo de comida y por fecha\n\nEl formato de la fecha es YYYY-MM-DD",
-                "operationId": "9344a24ba6a49d5e7f4d9fdaba999fec",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "type": {
-                                        "type": "string"
-                                    },
-                                    "date": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "operationId": "3b54ac21aefffdcb5f5424dce75cde6b",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "path",
+                        "description": "Tipo de comida",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "date",
+                        "in": "path",
+                        "description": "Fecha de la ingesta",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
-                        "description": "Se ontienen las ingestiones de los niños de un grupo, dependiendo la fecha y tipo de comida."
+                        "description": "Se obtienen las ingestiones de los niños de un grupo, dependiendo la fecha y tipo de comida."
                     },
                     "default": {
                         "description": "Ha ocurrido un error."
@@ -277,23 +280,30 @@
                 ]
             }
         },
-        "/api/editIngesta": {
+        "/api/editIngesta/{id_ingesta}": {
             "put": {
                 "tags": [
                     "Ingestiones"
                 ],
                 "summary": "Publicación de un auncio",
-                "description": "Para poder almacenar un anuncio tiene que existir un profesor que esté a cargo de un grupo.\nSe verifica que el grupo exista y que además corresponda al usuario que lo esta publicando;\nse da por hecho que el usuario es un profesor, pues los unicos que pueden ser registrados \nen la tabla de grupos, son los profesores.\n\nEl formato de la fecha es YYYY-MM-DD",
-                "operationId": "fd914136b1089f01552cfeee2e79d5a6",
+                "operationId": "57af7aa734b5103d4f8768acfa41f792",
+                "parameters": [
+                    {
+                        "name": "id_ingesta",
+                        "in": "path",
+                        "description": "Id de la ingesta",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "id_ingestion": {
-                                        "type": "integer"
-                                    },
                                     "gratification": {
                                         "type": "integer"
                                     }
@@ -376,6 +386,98 @@
                 "responses": {
                     "200": {
                         "description": "Se retornan los anuncios según el usuario."
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/editNotice/{id_notice}": {
+            "put": {
+                "tags": [
+                    "Anuncios"
+                ],
+                "summary": "Publicación de un auncio",
+                "description": "El formato de la fecha es YYYY-MM-DD",
+                "operationId": "5a25c948db5daf1d7b890224e5541fc2",
+                "parameters": [
+                    {
+                        "name": "id_notice",
+                        "in": "path",
+                        "description": "Id del anuncio",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "importance": {
+                                        "type": "integer"
+                                    },
+                                    "date": {
+                                        "type": "string"
+                                    },
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "body": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Se actualiza la información de un anuncio."
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/getNoticeByID/{id_notice}": {
+            "get": {
+                "tags": [
+                    "Anuncios"
+                ],
+                "summary": "Publicación de un auncio",
+                "description": "No importa que rol tenga el usuario, se podrá consultar la noticia por su ID",
+                "operationId": "76bbb93528837897ebed050ff026fefb",
+                "parameters": [
+                    {
+                        "name": "id_notice",
+                        "in": "path",
+                        "description": "Id del anuncio",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Se retorna la información de un anuncio en especifico."
                     },
                     "default": {
                         "description": "Ha ocurrido un error."
