@@ -131,27 +131,33 @@ class IngestionController extends Controller
                 $groupId = $user->group->id;
     
                 $ingestions = DB::table('children')
-                    ->leftJoin('ingestions', function ($join){
-                        $join->on('children.id', '=', 'ingestions.id_child');
+                    ->leftJoin('ingestions', function ($join) use ($request){
+                        $join->on('children.id', '=', 'ingestions.id_child')
+                            ->join('food', function ($joinFood) use ($request) {
+                                $joinFood->on('ingestions.id_food', '=', 'food.id')
+                                    ->where('food.type', '=', $request->type)
+                                    ->where('food.date', '=', $request->date);
+                            });
                     })
-                    ->leftJoin('food', function ($join) use ($request){
-                        $join->on('ingestions.id_food', '=', 'food.id')
-                            ->where('food.type', '=', $request->type)
-                            ->where('food.date', '=', $request->date);
-                    })
-                    ->selectRaw('children.name name, children.first_surname, children.second_surname, COALESCE(ingestions.gratification, 0) as gratification')
+                    ->selectRaw('children.name as name, children.first_surname, children.second_surname, COALESCE(ingestions.gratification, 0) as gratification')
                     ->where('children.id_group', '=', $groupId)
                     ->get();
 
-                $food = DB::table('food')
-                    ->leftjoin('ingestions', function($join){
-                        $join->on('ingestions.id_food', '=', 'food.id');
+                $foodName = DB::table('food')
+                    ->leftJoin('ingestions', function($join) use ($groupId){
+                        $join->on('ingestions.id_food', '=', 'food.id')
+                            ->join('children', function ($joinChild) use ($groupId){
+                                $joinChild ->on('children.id', '=', 'ingestions.id_child')
+                                    ->where('children.id_group', '=', $groupId);
+                            });
                     })
-                    ->select('food.id', 'food.name', 'food.hour')
+                    ->select('food.name', 'food.hour', 'food.date')
+                    ->where('food.type', '=', $request->type)
+                    ->where('food.date', '=', $request->date)
                     ->get();
-
+                
                 return response()->json([
-                    'food' => $food,
+                    'food' => $foodName,
                     'ingestions' => $ingestions
                 ], 200);
             } catch (Exception $ex){
