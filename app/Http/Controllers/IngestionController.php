@@ -166,7 +166,7 @@ class IngestionController extends Controller
                     ->get();
                 
                 return response()->json([
-                    'food' => $foodName,
+                    'food' => $foodName[0],
                     'ingestions' => $ingestions
                 ], 200);
             } catch (Exception $ex){
