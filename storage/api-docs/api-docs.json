@@ -200,7 +200,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Se almacena un anuncio en un grupo."
+                        "description": "Se almacena la satisfacción del niño al ingerir la comida."
                     },
                     "default": {
                         "description": "Ha ocurrido un error."
@@ -241,7 +241,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Se almacena un anuncio en un grupo."
+                        "description": "Se ontienen las ingestiones de los niños de un grupo, dependiendo la fecha y tipo de comida."
                     },
                     "default": {
                         "description": "Ha ocurrido un error."
@@ -268,6 +268,47 @@
                     },
                     "400": {
                         "description": "Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/editIngesta": {
+            "put": {
+                "tags": [
+                    "Ingestiones"
+                ],
+                "summary": "Publicación de un auncio",
+                "description": "Para poder almacenar un anuncio tiene que existir un profesor que esté a cargo de un grupo.\nSe verifica que el grupo exista y que además corresponda al usuario que lo esta publicando;\nse da por hecho que el usuario es un profesor, pues los unicos que pueden ser registrados \nen la tabla de grupos, son los profesores.\n\nEl formato de la fecha es YYYY-MM-DD",
+                "operationId": "fd914136b1089f01552cfeee2e79d5a6",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id_ingestion": {
+                                        "type": "integer"
+                                    },
+                                    "gratification": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Se actualiza la satisfacción del niño al comer."
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
                     }
                 },
                 "security": [

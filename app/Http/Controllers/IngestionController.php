@@ -36,7 +36,7 @@ class IngestionController extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Se almacena un anuncio en un grupo."
+     *         description="Se almacena la satisfacción del niño al ingerir la comida."
      *     ),
      *     @OA\Response(
      *         response="default",
@@ -109,7 +109,7 @@ class IngestionController extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Se almacena un anuncio en un grupo."
+     *         description="Se ontienen las ingestiones de los niños de un grupo, dependiendo la fecha y tipo de comida."
      *     ),
      *     @OA\Response(
      *         response="default",
@@ -139,7 +139,7 @@ class IngestionController extends Controller
                                     ->where('food.date', '=', $request->date);
                             });
                     })
-                    ->selectRaw('children.name as name, children.first_surname, children.second_surname, COALESCE(ingestions.gratification, 0) as gratification')
+                    ->selectRaw('COALESCE(ingestions.id, -1) as id_ingestion, children.name as name, children.first_surname, children.second_surname, COALESCE(ingestions.gratification, 0) as gratification')
                     ->where('children.id_group', '=', $groupId)
                     ->get();
 
@@ -151,7 +151,7 @@ class IngestionController extends Controller
                                     ->where('children.id_group', '=', $groupId);
                             });
                     })
-                    ->select('food.name', 'food.hour', 'food.date')
+                    ->select('food.id','food.name', 'food.hour', 'food.date')
                     ->where('food.type', '=', $request->type)
                     ->where('food.date', '=', $request->date)
                     ->get();
@@ -208,6 +208,78 @@ class IngestionController extends Controller
             return response()->json([
                 'ingestions' => $ingestions
             ], 200);
+        } else {
+            return response()->json([
+                'message' => 'No autorizado',
+            ], 401);
+        }
+    }
+
+    /**
+     * Para poder almacenar un anuncio tiene que existir un profesor que esté a cargo de un grupo.
+     * Se verifica que el grupo exista y que además corresponda al usuario que lo esta publicando;
+     * se da por hecho que el usuario es un profesor, pues los unicos que pueden ser registrados 
+     * en la tabla de grupos, son los profesores.
+     *
+     * El formato de la fecha es YYYY-MM-DD
+     * 
+     * @OA\Put(
+     *     path="/api/editIngesta",
+     *     tags={"Ingestiones"},
+     *     summary="Publicación de un auncio",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id_ingestion", type="integer"), 
+     *             @OA\Property(property="gratification", type="integer"), 
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Se actualiza la satisfacción del niño al comer."
+     *     ),
+     *     @OA\Response(
+     *         response="default",
+     *         description="Ha ocurrido un error."
+     *     )
+     * )
+     */
+    public function editIngesta(Request $request)
+    {
+        $user = $request->user();
+
+        if($user->role_id == 1)
+        {
+            try 
+            {
+                $request->validate([
+                    'id_ingestion' => [
+                        'required',
+                        Rule::exists(Ingestion::class, 'id')->where(function ($query) use ($request){
+                            $query->where('id', $request->id_ingestion);
+                        })
+                    ],
+                    'gratification'=> 'required'
+                ]);
+
+                $ingestion = Ingestion::find($request->id_ingestion);
+
+                $ingestion->gratification = $request->gratification;
+                $ingestion->save();
+
+                return response()->json([
+                    'message' => 'Datos almacenados correctamente',
+                    'new ingestion' => $ingestion
+                ], 202);
+            }
+            catch (Exception $ex)
+            {   
+                return response()->json([
+                    'message' => 'Datos incorrectos',
+                    'error' => $ex
+                ], 418);
+            }
         } else {
             return response()->json([
                 'message' => 'No autorizado',
