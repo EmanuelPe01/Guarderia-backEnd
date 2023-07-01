@@ -25,6 +25,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/allNotices', [NoticeController::class, 'getNotices']);
     Route::get('/getNoticeByID/{id_notice}', [NoticeController::class, 'getNoticeByID']);
     Route::put('/editNotice/{id_notice}', [NoticeController::class, 'editNotice']);
+    Route::delete('/destroyNotice/{id_notice}', [NoticeController::class, 'destroyNotice']);
 
     Route::post('/createIngestion', [IngestionController::class, 'store']);
     Route::get('/getIngestasByGroup/{type}/{date}', [IngestionController::class, 'getIngestasByGroup']);

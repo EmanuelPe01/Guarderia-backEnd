@@ -91,7 +91,7 @@ class NoticeController extends Controller
      * @OA\Get(
      *     path="/api/allNotices",
      *     tags={"Anuncios"},
-     *     summary="Publicación de un auncio",
+     *     summary="Ver todas las noticias",
      *     security={{"bearerAuth": {}}},
      *     @OA\Response(
      *         response=200,
@@ -134,7 +134,7 @@ class NoticeController extends Controller
      * @OA\Put(
      *     path="/api/editNotice/{id_notice}",
      *     tags={"Anuncios"},
-     *     summary="Publicación de un auncio",
+     *     summary="Editar un anuncio",
      *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="id_notice",
@@ -142,7 +142,7 @@ class NoticeController extends Controller
      *         description="Id del anuncio",
      *         required=true,
      *         @OA\Schema(
-     *             type="string"
+     *             type="integer"
      *         )
      *     ),
      *     @OA\RequestBody(
@@ -211,7 +211,7 @@ class NoticeController extends Controller
      * @OA\Get(
      *     path="/api/getNoticeByID/{id_notice}",
      *     tags={"Anuncios"},
-     *     summary="Publicación de un auncio",
+     *     summary="Obtener noticia por ID",
      *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="id_notice",
@@ -219,7 +219,7 @@ class NoticeController extends Controller
      *         description="Id del anuncio",
      *         required=true,
      *         @OA\Schema(
-     *             type="string"
+     *             type="integer"
      *         )
      *     ),
      *     @OA\Response(
@@ -249,4 +249,50 @@ class NoticeController extends Controller
             ], 418);
         }
     }       
+
+    /**
+     * No importa que rol tenga el usuario, se podrá consultar la noticia por su ID
+     *
+     * 
+     * @OA\Delete(
+     *     path="/api/destroyNotice/{id_notice}",
+     *     tags={"Anuncios"},
+     *     summary="Eliminar un anuncio",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Parameter(
+     *         name="id_notice",
+     *         in="path",
+     *         description="Id del anuncio",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Se retorna la información de un anuncio en especifico."
+     *     ),
+     *     @OA\Response(
+     *         response="default",
+     *         description="Ha ocurrido un error."
+     *     )
+     * )
+     */
+    public function destroyNotice($id)
+    {
+        $notice = Notice::find($id);
+
+        if(!$notice)
+        {
+            return response()->json([
+                'message' => 'Registro no encontrado'
+            ], 418);
+        } 
+
+        $notice->delete();
+
+        return response()->json([
+            'message' => 'Anuncio eliminado correctamente'
+        ], 200);
+    }
 }

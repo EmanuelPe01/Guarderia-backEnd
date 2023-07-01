@@ -24,7 +24,7 @@ class IngestionController extends Controller
      * @OA\Post(
      *     path="/api/createIngestion",
      *     tags={"Ingestiones"},
-     *     summary="Publicación de un auncio",
+     *     summary="Registro de una ingestion de un niño",
      *     security={{"bearerAuth": {}}},
      *     @OA\RequestBody(
      *         required=true,
@@ -99,7 +99,7 @@ class IngestionController extends Controller
      * @OA\Get(
      *     path="/api/getIngestasByGroup/{type}/{date}",
      *     tags={"Ingestiones"},
-     *     summary="Publicación de un auncio",
+     *     summary="Obtener ingestas por grupo",
      *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="type",
@@ -228,7 +228,7 @@ class IngestionController extends Controller
      * @OA\Put(
      *     path="/api/editIngesta/{id_ingesta}",
      *     tags={"Ingestiones"},
-     *     summary="Publicación de un auncio",
+     *     summary="Editar la ingesta del niño",
      *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="id_ingesta",

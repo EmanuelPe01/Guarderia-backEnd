@@ -19,7 +19,7 @@ class ChilController extends Controller
      * @OA\Post(
      *     path="/api/createChild",
      *     tags={"Chamacos"},
-     *     summary="Publicación de un auncio",
+     *     summary="Inscripción de un niño",
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(

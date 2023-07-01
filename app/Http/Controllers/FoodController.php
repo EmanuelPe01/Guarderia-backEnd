@@ -16,7 +16,7 @@ class FoodController extends Controller
      * @OA\Post(
      *     path="/api/createFood",
      *     tags={"Comidas"},
-     *     summary="Publicación de un auncio",
+     *     summary="Registrar comida disponible en un día específico",
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(

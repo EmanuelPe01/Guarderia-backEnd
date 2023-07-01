@@ -11,7 +11,7 @@
                 "tags": [
                     "Chamacos"
                 ],
-                "summary": "Publicación de un auncio",
+                "summary": "Inscripción de un niño",
                 "description": "El id_user debe corresponder a un usuario con el rol de padre, \ny el id_group debe existir",
                 "operationId": "9923726a293d6097611c0a57e5c989ac",
                 "requestBody": {
@@ -56,7 +56,7 @@
                 "tags": [
                     "Comidas"
                 ],
-                "summary": "Publicación de un auncio",
+                "summary": "Registrar comida disponible en un día específico",
                 "description": "Formato de fecha: YYYY-MM-DD\n\nFormato de hora: HH:MM:SS",
                 "operationId": "6bfd0a3d45bc6e6f89330677fc951a88",
                 "requestBody": {
@@ -174,7 +174,7 @@
                 "tags": [
                     "Ingestiones"
                 ],
-                "summary": "Publicación de un auncio",
+                "summary": "Registro de una ingestion de un niño",
                 "description": "Para poder almacenar un anuncio tiene que existir un profesor que esté a cargo de un grupo.\nSe verifica que el grupo exista y que además corresponda al usuario que lo esta publicando;\nse da por hecho que el usuario es un profesor, pues los unicos que pueden ser registrados \nen la tabla de grupos, son los profesores.\n\nEl formato de la fecha es YYYY-MM-DD",
                 "operationId": "f62c7c2e2d1c7fb851b7227896b385a0",
                 "requestBody": {
@@ -218,7 +218,7 @@
                 "tags": [
                     "Ingestiones"
                 ],
-                "summary": "Publicación de un auncio",
+                "summary": "Obtener ingestas por grupo",
                 "description": "Retorna la gratificación de los niños, si no tienen ingestiones registradas, no se de devuelven \nni la gratificación ni la hora del tipo de comida.\n\nSe consulta por tipo de comida y por fecha\n\nEl formato de la fecha es YYYY-MM-DD",
                 "operationId": "3b54ac21aefffdcb5f5424dce75cde6b",
                 "parameters": [
@@ -285,7 +285,7 @@
                 "tags": [
                     "Ingestiones"
                 ],
-                "summary": "Publicación de un auncio",
+                "summary": "Editar la ingesta del niño",
                 "operationId": "57af7aa734b5103d4f8768acfa41f792",
                 "parameters": [
                     {
@@ -380,7 +380,7 @@
                 "tags": [
                     "Anuncios"
                 ],
-                "summary": "Publicación de un auncio",
+                "summary": "Ver todas las noticias",
                 "description": "Se debe mandar el token de inicio de sesión para verificar que anuncis se devolverán.\n\nSi es profesor se mandan los anuncios correspondientes al grupo, por otro lado, si es \npadre, se mandan los anuncios de sus hijos.",
                 "operationId": "1de3562060be45b8ad6c2a85269a096a",
                 "responses": {
@@ -403,7 +403,7 @@
                 "tags": [
                     "Anuncios"
                 ],
-                "summary": "Publicación de un auncio",
+                "summary": "Editar un anuncio",
                 "description": "El formato de la fecha es YYYY-MM-DD",
                 "operationId": "5a25c948db5daf1d7b890224e5541fc2",
                 "parameters": [
@@ -413,7 +413,7 @@
                         "description": "Id del anuncio",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -461,7 +461,7 @@
                 "tags": [
                     "Anuncios"
                 ],
-                "summary": "Publicación de un auncio",
+                "summary": "Obtener noticia por ID",
                 "description": "No importa que rol tenga el usuario, se podrá consultar la noticia por su ID",
                 "operationId": "76bbb93528837897ebed050ff026fefb",
                 "parameters": [
@@ -471,7 +471,41 @@
                         "description": "Id del anuncio",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Se retorna la información de un anuncio en especifico."
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/destroyNotice/{id_notice}": {
+            "delete": {
+                "tags": [
+                    "Anuncios"
+                ],
+                "summary": "Eliminar un anuncio",
+                "description": "No importa que rol tenga el usuario, se podrá consultar la noticia por su ID",
+                "operationId": "4499726351c483ddd9a186ba7e57e8bc",
+                "parameters": [
+                    {
+                        "name": "id_notice",
+                        "in": "path",
+                        "description": "Id del anuncio",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
                         }
                     }
                 ],
