@@ -148,7 +148,7 @@ class IngestionController extends Controller
                                     ->where('food.date', '=', $date);
                             });
                     })
-                    ->selectRaw('COALESCE(ingestions.id, -1) as id_ingestion, children.name as name, children.first_surname, children.second_surname, COALESCE(ingestions.gratification, 0) as gratification')
+                    ->selectRaw('COALESCE(ingestions.id, -1) as id_ingestion, children.id as id_child ,children.name as name, children.first_surname, children.second_surname, COALESCE(ingestions.gratification, 0) as gratification')
                     ->where('children.id_group', '=', $groupId)
                     ->get();
 
